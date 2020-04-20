@@ -54,6 +54,31 @@
     
     
     <entry>
+      <title>GIT使用介绍</title>
+      <link href="/2020/04/05/Git/"/>
+      <url>/2020/04/05/Git/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><strong>GIT简介</strong></p><p>Git 是一个开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。</p><p>Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。</p><p>Git 与常用的版本控制工具 CVS, Subversion 等不同，它采用了分布式版本库的方式，不必服务器端软件支持。<br><a href="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587365740311&di=ce7a763a9cb6581344bcd1244216e792&imgtype=0&src=http%3A%2F%2Fwww.uml.org.cn%2Fpzgl%2Fimages%2F2014081232.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587365740311&di=ce7a763a9cb6581344bcd1244216e792&imgtype=0&src=http%3A%2F%2Fwww.uml.org.cn%2Fpzgl%2Fimages%2F2014081232.png" class="lazyload"></a></p><p><strong>Git的功能特性</strong>：<br>从一般开发者的角度来看，git有以下功能：</p><p>1、 从服务器上克隆完整的Git仓库（包括代码和版本信息）到单机上。</p><p>2、 在自己的机器上根据不同的开发目的，创建分支，修改代码。</p><p>3、 在单机上自己创建的分支上提交代码。</p><p>4、 在单机上合并分支。</p><p>5、 把服务器上最新版的代码fetch下来，然后跟自己的主分支合并。</p><p>6、 生成补丁（patch），把补丁发送给主开发者。</p><p>7、 看主开发者的反馈，如果主开发者发现两个一般开发者之间有冲突（他们之间可以合作解决的冲突），就会要求他们先解决冲突，然后再由其中一个人提交。如果主开发者可以自己解决，或者没有冲突，就通过。</p><p>8、 一般开发者之间解决冲突的方法，开发者之间可以使用pull 命令解决冲突，解决完冲突之后再向主开发者提交补丁。</p><p><strong>工作原理 / 流程：</strong></p><ul><li>Workspace：工作区</li><li>Index / Stage：暂存区</li><li>Repository：仓库区（或本地仓库）</li><li>Remote：远程仓库<br><a href="http://images2015.cnblogs.com/blog/801940/201610/801940-20161020140356295-2001303481.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="http://images2015.cnblogs.com/blog/801940/201610/801940-20161020140356295-2001303481.png" class="lazyload"></a></li></ul><p><strong>GIt和SVN</strong><br>Git 不仅仅是个版本控制系统，它也是个内容管理系统(CMS)，工作管理系统等。</p><p>Git 与 SVN 区别点：</p><p>1、Git 是分布式的，SVN 不是：这是 Git 和其它非分布式的版本控制系统，例如 SVN，CVS 等，最核心的区别。</p><p>2、Git 把内容按元数据方式存储，而 SVN 是按文件：所有的资源控制系统都是把文件的元信息隐藏在一个类似 .svn、.cvs 等的文件夹里。</p><p>3、Git 分支和 SVN 的分支不同：分支在 SVN 中一点都不特别，其实它就是版本库中的另外一个目录。</p><p>4、Git 没有一个全局的版本号，而 SVN 有：目前为止这是跟 SVN 相比 Git 缺少的最大的一个特征。</p><p>5、Git 的内容完整性要优于 SVN：Git 的内容存储使用的是 SHA-1 哈希算法。这能确保代码内容的完整性，确保在遇到磁盘故障和网络问题时降低对版本库的破坏。<br><a href="https://www.runoob.com/wp-content/uploads/2015/02/0D32F290-80B0-4EA4-9836-CA58E22569B3.jpg" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://www.runoob.com/wp-content/uploads/2015/02/0D32F290-80B0-4EA4-9836-CA58E22569B3.jpg" class="lazyload"></a></p><p><strong>配置</strong></p><p>1、 检查本机是否有ssh key设置</p><p>如果没有则提示： No such file or directory</p><p>如果有则进入~/.ssh路径下（ls查看当前路径文件，rm删除所有文件）</p><p>2、 使用Git Bash生成新的ssh key</p><p>$ cd ~ #保证当前路径在”~”下</p><blockquote><p>$ ssh-keygen -t rsa -C “<a href="mailto:xxxxxx@yy.com">xxxxxx@yy.com</a>“  #建议填写自己真实有效的邮箱地址<br>Generating public/private rsa key pair.<br>Enter file in which to save the key (/c/Users/xxxx_000/.ssh/id_rsa):   #不填直接回车<br>Enter passphrase (empty for no passphrase):   #输入密码（可以为空）<br>Enter same passphrase again:   #再次确认密码（可以为空）<br>Your identification has been saved in /c/Users/xxxx_000/.ssh/id_rsa.   #生成的密钥<br>Your public key has been saved in /c/Users/xxxx_000/.ssh/id_rsa.pub. #生成的公钥<br>The key fingerprint is:<br>e3:51:33:xx:xx:xx:xx:xxx:61:28:83:e2:81 <a href="mailto:xxxxxx@yy.com">xxxxxx@yy.com</a><br>//本机已完成ssh key设置，其存放路径为：c:/Users/xxxx_000/.ssh/下。<br>//可生成ssh key自定义名称的密钥，默认id_rsa。<br>$ ssh-keygen -t rsa -C “邮箱地址” -f ~/.ssh/githug_blog_keys #生成ssh key的名称为githug_blog_keys，慎用容易出现其它异常。</p></blockquote><p>3、 配置账户</p><blockquote><p>$ git config –global user.name “your_username” #设置用户名<br>$ git config –global user.email “your_registered_github_Email” #设置邮箱地址(建议用注册giuhub的邮箱)</p></blockquote><p>4、 测试ssh keys是否设置成功</p><blockquote><p>$ ssh -T <a href="mailto:git@github.com">git@github.com</a><br>The authenticity of host ‘github.com(192.30.252.129)’ can’t be established.<br>RSA key fingerprint is16:27:xx:xx:xx:xx:xx:4d:eb:df:a6:48.<br>Are you sure you want to continueconnecting (yes/no)? yes #确认你是否继续联系，输入yes<br>Warning: Permanently added’github.com,192.30.252.129’ (RSA) to the list of known hosts.<br>Enter passphrase for key’/c/Users/xxxx_000/.ssh/id_rsa’: #生成sshkye是密码为空则无此项，若设置有密码则有此项且，输入生成ssh key时设置的密码即可。<br>Hi xxx! You’ve successfullyauthenticated, but GitHub does not provide shell access. #出现词句话，说明设置成功。</p></blockquote><p><strong>使用方法</strong></p><p>使用Git前，需要先建立一个仓库(repository)。您可以使用一个已经存在的目录作为Git仓库或创建一个空目录。</p><p>使用您当前目录作为Git仓库，我们只需使它初始化。</p><blockquote><p>git init</p></blockquote><p>我们有一个仓库，但什么也没有，可以使用add命令添加文件。</p><blockquote><p>git add filename</p></blockquote><p>文件提交到仓库</p><blockquote><p>git commit</p></blockquote><p>git commit 命令的-a选项可将所有被修改或者已删除的且已经被git管理的文档提交到仓库中。</p><p>从服务器克隆一个库</p><blockquote><p>git clone</p></blockquote><p>推送到服务器</p><blockquote><p>git pull</p></blockquote><p>从资源库中删除文件，我们使用rm</p><blockquote><p>git rm file</p></blockquote><p>要创建一个新的分支，我们使用branch命令。</p><blockquote><p>git branch</p></blockquote><p>branch命令不会将我们带入分支，只是创建一个新分支。所以我们使用checkout命令来更改分支。</p><p><a href="https://i.loli.net/2020/04/20/yqVIEGitXelW4L8.jpg" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.loli.net/2020/04/20/yqVIEGitXelW4L8.jpg" class="lazyload"></a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GIT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>常用的数据结构：数组，栈，链表，队列，树，图，堆，散列表</title>
       <link href="/2020/04/05/data%20struct/"/>
       <url>/2020/04/05/data%20struct/</url>

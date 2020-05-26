@@ -4,11 +4,36 @@
   
     
     <entry>
+      <title>celery</title>
+      <link href="/2020/05/26/CELERY/"/>
+      <url>/2020/05/26/CELERY/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><strong>celery 简介</strong></p><p>Celery 是一个专注于实时处理和任务调度的分布式任务队列, 同时提供操作和维护分布式系统所需的工具.. 所谓任务就是消息, 消息中的有效载荷中包含要执行任务需要的全部数据.</p><p>Celery 是一个分布式队列的管理工具, 可以用 Celery 提供的接口快速实现并管理一个分布式的任务队列.</p><p>Celery 本身不是任务队列, 是管理分布式任务队列的工具. 它封装了操作常见任务队列的各种操作, 我们使用它可以快速进行任务队列的使用与管理.</p><p><a href="https://i.loli.net/2020/05/26/J6fWiczPsVtAOlZ.jpg" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://i.loli.net/2020/05/26/J6fWiczPsVtAOlZ.jpg" class="lazyload"></a> </p><p><strong>Celery 特性 :</strong></p><p>方便查看定时任务的执行情况, 如 是否成功, 当前状态, 执行任务花费的时间等.</p><p>使用功能齐备的管理后台或命令行添加,更新,删除任务.<br>方便把任务和配置管理相关联.</p><p>可选 多进程, Eventlet 和 Gevent 三种模型并发执行.<br>提供错误处理机制.</p><p>提供多种任务原语, 方便实现任务分组,拆分,和调用链.<br>支持多种消息代理和存储后端.</p><p>Celery 是语言无关的.它提供了python 等常见语言的接口支持.</p><p><strong>使用场景</strong></p><p>异步任务：将耗时操作任务提交给Celery去异步执行，比如发送短信/邮件、消息推送、音视频处理等等</p><p>定时任务：定时执行某件事情，比如每天数据统计</p><p><strong>Django中使用Celery</strong></p><p>1、 在项目目录下创建celeryconfig.py</p><pre><code>import djcelery djcelery.setup_loader() CELERY_IMPORTS=(     &apos;app01.tasks&apos;, ) #有些情况可以防止死锁 CELERYD_FORCE_EXECV=True # 设置并发worker数量 CELERYD_CONCURRENCY=4 #允许重试 CELERY_ACKS_LATE=True # 每个worker最多执行100个任务被销毁，可以防止内存泄漏 CELERYD_MAX_TASKS_PER_CHILD=100 # 超时时间   CELERYD_TASK_TIME_LIMIT=12*30</code></pre><p>2、 在app01目录下创建tasks.py</p><pre><code>from celery import task@taskdef add(a,b):    with open(&apos;a.text&apos;, &apos;a&apos;, encoding=&apos;utf-8&apos;) as f:        f.write(&apos;a&apos;)    print(a+b)</code></pre><p>3、 视图函数views.py</p><pre><code>from django.shortcuts import render,HttpResponsefrom app01.tasks import addfrom datetime import datetimedef test(request):    # result=add.delay(2,3)    ctime = datetime.now()    # 默认用utc时间    utc_ctime = datetime.utcfromtimestamp(ctime.timestamp())    from datetime import timedelta    time_delay = timedelta(seconds=5)    task_time = utc_ctime + time_delay    result = add.apply_async(args=[4, 3], eta=task_time)    print(result.id)    return HttpResponse(&apos;ok&apos;)</code></pre><p>4、 settings.py</p><pre><code>#INSTALLED_APPS = [#    &apos;djcelery&apos;,#    &apos;app01&apos;#]from djagocele import celeryconfigBROKER_BACKEND=&apos;redis&apos;BOOKER_URL=&apos;redis://127.0.0.1:6379/1&apos;CELERY_RESULT_BACKEND=&apos;redis://127.0.0.1:6379/2&apos;</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> celery </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SPU和SKU</title>
       <link href="/2020/05/22/SPU%20%20SKU/"/>
       <url>/2020/05/22/SPU%20%20SKU/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><strong>SPU和SKU介绍及区别</strong></p><p><strong>一、spu概念</strong></p><blockquote><p>SPU = Standard Product Unit (标准化产品单元)</p></blockquote><p>SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。通俗点讲，属性值、特性相同的商品就可以称为一个SPU。</p><p><strong>二、sku概念</strong></p><blockquote><p>SKU=stock keeping unit(库存量单位)</p></blockquote><p>SKU即库存进出计量的单位， 可以是以件、盒、托盘等为单位。<br>SKU是物理上不可分割的最小存货单元。在使用时要根据不同业态，不同管理模式来处理。在服装、鞋类商品中使用最多最普遍。</p><p><strong>三、区别</strong></p><p>1、 在商品信息电子化过程中，商品的特性可以由多个“属性|属性值对”进行描述。“属性|属性值对”完全相同的商品，可以抽象成为一个SPU。</p><p>另一方面，这些“属性|属性值对”在SPU中固化下来，逐步标准化。</p><p>基于SPU的商品信息结构，可以实现丰富的应用，比如商品信息与资讯、评论、以及其它SPU的整合。</p><p>例如：iPhone X 可以确定一个产品即为一个SPU。</p><hr><p>1、 SKU是指一款商品，每款都有出现一个SKU，便于电商品牌识别商品。</p><p>2、 一款商品多色，则是有多个SKU，例：一件衣服，有红色、白色、蓝色，则SKU编码也不相同，如相同则会出现混淆，发错货。</p><p>例如：iPhone X 64G 银色 则是一个SKU。</p><p>spu是宝贝的编码，sku是宝贝的款式</p><p><a href="https://i.loli.net/2020/05/22/gtfqjrAnJaBdb4k.png" data-fancybox="group" data-caption="3.png" class="fancybox"><img alt="3.png" title="3.png" data-src="https://i.loli.net/2020/05/22/gtfqjrAnJaBdb4k.png" class="lazyload"></a></p><p><a href="https://i.loli.net/2020/05/22/z2uBKg1k9OVMHbm.jpg" data-fancybox="group" data-caption="4.jpg" class="fancybox"><img alt="4.jpg" title="4.jpg" data-src="https://i.loli.net/2020/05/22/z2uBKg1k9OVMHbm.jpg" class="lazyload"></a></p><p><a href="https://i.loli.net/2020/05/22/cWXt7HEkeVzKslQ.png" data-fancybox="group" data-caption="5.png" class="fancybox"><img alt="5.png" title="5.png" data-src="https://i.loli.net/2020/05/22/cWXt7HEkeVzKslQ.png" class="lazyload"></a></p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><strong>SPU和SKU介绍及区别</strong></p><p><strong>一、spu概念</strong></p><blockquote><p>SPU = Standard Product Unit (标准化产品单元)</p></blockquote><p>SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。通俗点讲，属性值、特性相同的商品就可以称为一个SPU。</p><p><strong>二、sku概念</strong></p><blockquote><p>SKU=stock keeping unit(库存量单位)</p></blockquote><p>SKU即库存进出计量的单位， 可以是以件、盒、托盘等为单位。<br>SKU是物理上不可分割的最小存货单元。在使用时要根据不同业态，不同管理模式来处理。在服装、鞋类商品中使用最多最普遍。</p><p><strong>三、区别</strong></p><p>1、 在商品信息电子化过程中，商品的特性可以由多个“属性|属性值对”进行描述。“属性|属性值对”完全相同的商品，可以抽象成为一个SPU。</p><p>另一方面，这些“属性|属性值对”在SPU中固化下来，逐步标准化。</p><p>基于SPU的商品信息结构，可以实现丰富的应用，比如商品信息与资讯、评论、以及其它SPU的整合。</p><p>例如：iPhone X 可以确定一个产品即为一个SPU。</p><hr><p>1、 SKU是指一款商品，每款都有出现一个SKU，便于电商品牌识别商品。</p><p>2、 一款商品多色，则是有多个SKU，例：一件衣服，有红色、白色、蓝色，则SKU编码也不相同，如相同则会出现混淆，发错货。</p><p>例如：iPhone X 64G 银色 则是一个SKU。</p><p>spu是宝贝的编码，sku是宝贝的款式</p><p><a href="https://i.loli.net/2020/05/22/gtfqjrAnJaBdb4k.png" data-fancybox="group" data-caption="3.png" class="fancybox"><img alt="3.png" title="3.png" data-src="https://i.loli.net/2020/05/22/gtfqjrAnJaBdb4k.png" class="lazyload"></a></p><p><a href="https://i.loli.net/2020/05/22/z2uBKg1k9OVMHbm.jpg" data-fancybox="group" data-caption="4.jpg" class="fancybox"><img alt="4.jpg" title="4.jpg" data-src="https://i.loli.net/2020/05/22/z2uBKg1k9OVMHbm.jpg" class="lazyload"></a></p>]]></content>
       
       
       <categories>
